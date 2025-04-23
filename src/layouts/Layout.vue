@@ -4,13 +4,13 @@
       <Header />
     </div>
     <div class="body">
-<!--      <div class="sidebar border border-amber-400">Menu</div>-->
-      <div class="content">
+      <div class="content pt-16">
         <router-view />
       </div>
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
 import Header from "../components/Header.vue";
 </script>
@@ -21,11 +21,12 @@ import Header from "../components/Header.vue";
   height: 100%;
   display: flex;
   flex-direction: column;
+  background-color: #ffffff;
 
   .header {
     width: 100%;
     height: 50px;
-    background-color: #3955ff;
+    background-color: #322d2d;
     color: white;
   }
 
@@ -34,13 +35,8 @@ import Header from "../components/Header.vue";
     height: calc(100% - 50px);
     display: flex;
 
-    .sidebar {
-      width: 250px;
-      height: 100%;
-    }
-
     .content {
-      width: calc(100% - 250px);
+      width: 100%;
       height: 100%;
       padding: 16px;
     }
