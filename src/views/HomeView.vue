@@ -50,7 +50,6 @@
 
 <script setup lang="ts">
 import {computed, onMounted, ref} from 'vue'
-import Chart from 'chart.js/auto'
 import router from "../router";
 import {DashboardService} from "../service/DashboardService.ts";
 
