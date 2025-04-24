@@ -1,8 +1,9 @@
+
 export interface createProduct {
-    id: number;
     name: string;
     description: string;
     measureId: number;
+    status?: string;
 }
 
 export interface RegisterUser {
@@ -16,10 +17,27 @@ export interface LoginUser {
     username: string;
     password: string;
 }
-export interface Measure {
+
+export interface createMeasure {
+    name: string;
+}
+
+export interface updateMeasure extends createMeasure {
+    id: number;
+}
+
+export interface updateProduct extends createProduct {
+    id: number
+    status?: string;
+}
+export interface Measures {
     id: number;
     name: string;
-    piece?: string;
-    liter?: string;
-    kilogram?: number;
+}
+export interface Product {
+    id: number;
+    name: string;
+    description: string;
+    measureId: number;
+
 }
