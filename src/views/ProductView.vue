@@ -55,7 +55,7 @@
           </button>
           <button
               type="button"
-              @click="restForm"
+              @click="resetForm"
               class="bg-gray-400 hover:bg-gray-500 transition-colors duration-200 text-white px-5 py-2.5 rounded-lg font-semibold shadow">
             Bekor qilish
           </button>
@@ -63,36 +63,44 @@
 
       </form>
     </div>
-    <div v-if="products.length" class="mt-8">
-      <h2 class="text-xl font-semibold mb-4 text-gray-800">Mahsulotlar ro'yhati</h2>
 
+    <div v-if="products.length" class="relative overflow-x-auto mt-8">
+      <h2 class="text-2xl font-semibold mb-4 text-gray-800">O'lchovlar ro'yxati</h2>
 
-
-      <ul class="space-y-3">
-        <li
-            v-for="product in products"
-            :key="product.id"
-            class="bg-white shadow-md border border-gray-200 rounded-lg px-4 py-3 flex items-center justify-between hover:shadow-lg transition-shadow"
-        >
-          <span class="text-gray-800 font-medium">{{ product.name }}</span>
-          <span class="text-gray-800 font-medium">{{ product.description }}</span>
-          <div class="flex gap-2">
-            <button
-                @click="editMessage(product)"
-                class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1.5 rounded-md font-medium transition-colors duration-200 shadow-sm"
-            >
-              Edit
-            </button>
-            <button
-                @click="deleteProduct(product.id)"
-                class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-md font-medium transition-colors duration-200 shadow-sm"
-            >
-              Delete
-            </button>
-          </div>
-        </li>
-      </ul>
-
+      <table
+          class="w-full text-sm overflow-x-auto text-gray-800 bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-200">
+        <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold tracking-wider">
+        <tr>
+          <th class="px-6 py-4 text-left">ID</th>
+          <th class="px-6 py-4 text-left">name</th>
+          <th class="px-6 py-4 text-left">description</th>
+          <th class="px-6 py-4 text-left">Amallar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+            v-for="product in products" :key="product.id"
+            class="hover:bg-gray-50 transition-all duration-200 border-t border-gray-200">
+          <td class="px-6 py-4 text-left">{{ product.id }}</td>
+          <td class="px-6 py-4 text-left">{{ product.name }}</td>
+          <td class="px-6 py-4 text-left">{{ product.description }}</td>
+          <td class="px-6 py-4 text-left">
+            <div class="flex gap-2">
+              <button
+                  @click="editMessage(product)"
+                  class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1.5 rounded-md font-medium shadow-sm transition-colors duration-200">
+                Edit
+              </button>
+              <button
+                  @click="deleteProduct(product.id)"
+                  class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-md font-medium shadow-sm transition-colors duration-200">
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -122,6 +130,23 @@ const update = ref<updateProduct>(
 const measures = ref<Measures[]>([])
 const products = ref<Product[]>([])
 
+const handleSubmit = async () => {
+  try {
+    if (isEditing.value && update.value.id) {
+      await ApiService.updateProduct(update.value.id, <updateProduct>{
+        ...form.value,
+        id: update.value.id,
+        status: form.value.status,
+      })
+    } else {
+      await ApiService.createProduct(form.value)
+    }
+    resetForm()
+    await loadProducts()
+  } catch (error) {
+    console.log(error)
+  }
+}
 const loadProducts = async () => {
   try {
     const response = await ApiService.getAllProducts()
@@ -140,23 +165,6 @@ const loadMeasures = async () => {
   }
 }
 
-const handleSubmit = async () => {
-  try {
-    if (isEditing.value && update.value.id) {
-      await ApiService.updateProduct(update.value.id, <updateProduct>{
-        ...form.value,
-        id: update.value.id,
-        status: form.value.status,
-      })
-    } else {
-      await ApiService.createProduct(form.value)
-    }
-    restForm()
-    await loadProducts()
-  } catch (error) {
-    console.log(error)
-  }
-}
 
 const editMessage = (product: updateProduct) => {
   update.value = {
@@ -182,7 +190,7 @@ const deleteProduct = async (id: number) => {
     await loadProducts()
   }
 }
-const restForm = () => {
+const resetForm = () => {
   form.value = {
     name: "",
     description: "",

@@ -9,6 +9,7 @@ import OrderView from "../views/OrderView.vue";
 import SignUp from "../components/SignUp.vue";
 import Login from "../components/Login.vue";
 import MeasureView from "../views/MeasureView.vue";
+import IncomeView from "../views/IncomeView.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -39,6 +40,12 @@ const routes: Array<RouteRecordRaw> = [
                 path: "/measures",
                 name: "MeasureView",
                 component: MeasureView,
+                meta: {requiresAuth: true}
+            },
+            {
+                path:"/incomes",
+                name:"IncomeView",
+                component: IncomeView,
                 meta: {requiresAuth: true}
             }
         ]

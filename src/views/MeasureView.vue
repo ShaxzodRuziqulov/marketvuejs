@@ -34,31 +34,47 @@
       </form>
     </div>
 
-    <div v-if="measures.length" class="mt-8">
+    <div v-if="measures.length" class="relative overflow-x-auto mt-8">
       <h2 class="text-xl font-semibold mb-4 text-gray-800">O‘lchovlar ro‘yxati</h2>
-      <ul class="space-y-3">
-        <li
-            v-for="item in measures"
-            :key="item.id"
-            class="bg-white shadow-md border border-gray-200 rounded-lg px-4 py-3 flex items-center justify-between hover:shadow-lg transition-shadow"
-        >
-          <span class="text-gray-800 font-medium">{{ item.name }}</span>
-          <div class="flex gap-2">
-            <button
-                @click="editMeasure(item)"
-                class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1.5 rounded-md font-medium transition-colors duration-200 shadow-sm"
-            >
-              Edit
-            </button>
-            <button
-                @click="deleteMeasure(item.id)"
-                class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-md font-medium transition-colors duration-200 shadow-sm"
-            >
-              Delete
-            </button>
-          </div>
-        </li>
-      </ul>
+
+      <table
+          class="w-full text-sm overflow-x-auto text-gray-800 bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-200">
+        <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold tracking-wider">
+
+        <tr>
+          <th class="px-6 py-4 text-left">ID</th>
+          <th class="px-6 py-4 text-left">Name</th>
+          <th class="px-6 py-4 text-left">Amallar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+            v-for="measure in measures"
+            :key="measure.id"
+            class="hover:bg-gray-50 transition-all duration-200 border-t border-gray-200">
+          <td class="px-6 py-4 font-medium">{{ measure.id }}</td>
+          <td class="px-6 py-4 font-medium">{{ measure.name }}</td>
+          <td class="px-6 py-4 font-medium">
+            <div class="flex gap-2">
+              <button
+                  @click="editMeasure(measure)"
+                  class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1.5 rounded-md font-medium shadow-sm transition-colors duration-200"
+              >
+                Edit
+              </button>
+              <button
+                  @click="deleteMeasure(measure.id)"
+                  class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-md font-medium shadow-sm
+                transition-colors duration-200">
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+
     </div>
   </div>
 </template>

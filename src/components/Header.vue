@@ -26,10 +26,17 @@
       </router-link>
 
       <router-link
+          to="/incomes"
+          class="py-2 px-3 rounded-sm hover:bg-gray-700 transition duration-200"
+      >Incomes
+      </router-link>
+
+      <router-link
           to="/orders"
           class="py-2 px-3 rounded-sm hover:bg-gray-700 transition duration-200"
       >Orders
       </router-link>
+
     </div>
   </div>
 </template>

@@ -1,3 +1,49 @@
+export interface Income {
+    id: number;
+    productsId: number;
+    wareHouseId: number;
+    quantity: number;
+    measureId: number;
+    price: number;
+}
+
+export interface WareHouse {
+    id: number;
+    productsId: number;
+    quantity: number;
+    measureId: number;
+}
+
+export interface Measures {
+    id: number;
+    name: string;
+}
+
+export interface Product {
+    id: number;
+    name: string;
+    description: string;
+    measureId: number;
+}
+
+export interface Orders {
+    id: number;
+    productsId: number;
+    wareHouseId: number;
+    quantity: number;
+    measureId: number;
+}
+
+export interface updateOrder extends createOrder {
+    id: number;
+}
+
+export interface createOrder {
+    productsId: number;
+    wareHouseId: number;
+    quantity: number;
+    measureId: number;
+}
 
 export interface createProduct {
     name: string;
@@ -30,14 +76,16 @@ export interface updateProduct extends createProduct {
     id: number
     status?: string;
 }
-export interface Measures {
-    id: number;
-    name: string;
-}
-export interface Product {
-    id: number;
-    name: string;
-    description: string;
-    measureId: number;
 
+export interface updateIncome extends createIncome {
+    id: number
+}
+
+
+export interface createIncome {
+    productsId: number;
+    wareHouseId: number;
+    quantity: number;
+    measureId: number;
+    price: number;
 }
