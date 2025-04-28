@@ -3,7 +3,7 @@
     <div class="bg-white shadow-xl rounded-2xl p-6 transition-all duration-300 border border-gray-100">
       <form @submit.prevent="handleSubmit">
         <h2 class="text-2xl font-bold mb-4 text-gray-800">
-          {{ isEditing ? "Mahsulotni tahrirlash" : "Yangi o‘lchov qo‘shish" }}
+          {{ isEditing ? "Mahsulotni tahrirlash" : "Yangi mahsulot qo‘shish" }}
         </h2>
 
         <label class="block text-gray-700 font-medium mb-1"> Mahsulot nomi</label>
@@ -65,7 +65,7 @@
     </div>
 
     <div v-if="products.length" class="relative overflow-x-auto mt-8">
-      <h2 class="text-2xl font-semibold mb-4 text-gray-800">O'lchovlar ro'yxati</h2>
+      <h2 class="text-2xl font-semibold mb-4 text-gray-800">Mahsulotlar ro'yxati</h2>
 
       <table
           class="w-full text-sm overflow-x-auto text-gray-800 bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-200">

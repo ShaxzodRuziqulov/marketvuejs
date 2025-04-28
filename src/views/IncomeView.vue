@@ -16,15 +16,18 @@
           </option>
         </select>
 
-        <label class="block text-gray-700 font-medium mb-1">Ombor raqami</label>
-        <select v-model="form.wareHouseId"
-                required
-                class="border border-gray-300 focus:ring-2 focus:ring-green-400 focus:outline-none rounded-lg p-3 w-full mb-4 placeholder-gray-400 transition-all duration-200">
-          <option disabled>Omborni tanlang</option>
-          <option v-for="wareHouse in wareHouses" :key="wareHouse.id" :value="wareHouse.id">{{ wareHouse.id }}</option>
+        <div v-if="isEditing" class="mb-4">
+          <label class="block text-gray-700 font-medium mb-1">Status</label>
+          <select
+              v-model="form.status"
+              class="border border-gray-300 rounded-lg p-3 w-full mb-4"
+              required>
+            <option value="" disabled>Holatni tanlang</option>
 
-        </select>
-
+            <option value="ACTIVE">ACTIVE</option>
+            <option value="INACTIVE">INACTIVE</option>
+          </select>
+        </div>
         <label
             class="block text-gray-700 font-medium mb-1">Miqdori</label>
         <input
@@ -81,7 +84,8 @@
     <div v-if="incomes.length" class="relative overflow-x-auto mt-8">
       <h2 class="text-xl font-semibold mb-4 text-gray-800">Mahsulotlar ro'yxati</h2>
 
-      <table class="w-full text-sm overflow-x-auto text-gray-800 bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-200">
+      <table
+          class="w-full text-sm overflow-x-auto text-gray-800 bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-200">
         <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-semibold tracking-wider">
         <tr>
           <th class="px-6 py-4 text-left">ID</th>
@@ -89,7 +93,7 @@
           <th class="px-6 py-4 text-left">Narxi</th>
           <th class="px-6 py-4 text-left">Miqdori</th>
           <th class="px-6 py-4 text-left">O‘lchov</th>
-          <th class="px-6 py-4 text-left">Ombor</th>
+          <th class="px-6 py-4 text-left">Sana</th>
           <th class="px-6 py-4 text-left">Amallar</th>
         </tr>
         </thead>
@@ -104,7 +108,7 @@
           <td class="px-6 py-4">{{ income.price.toLocaleString() }} so'm</td>
           <td class="px-6 py-4">{{ income.quantity }}</td>
           <td class="px-6 py-4">{{ getMeasureName(income.measureId) }}</td>
-          <td class="px-6 py-4">#{{ getWarehouseName(income.wareHouseId) }}</td>
+          <td class="px-6 py-4">{{ formDate(income.createdAt) }}</td>
           <td class="px-6 py-4">
             <div class="flex gap-2">
               <button
@@ -146,7 +150,7 @@ const form = ref<createIncome>({
   price: 0,
   productsId: 0,
   quantity: 0,
-  wareHouseId: 0
+  wareHouseId: 1
 })
 const update = ref<updateIncome>({
   id: 0,
@@ -185,7 +189,7 @@ const loadWareHouses = async () => {
 
 const loadIncome = async () => {
   try {
-    const response = await ApiService.getAllIncomes()
+    const response = await ApiService.activeIncome()
     incomes.value = response.data
   } catch (error) {
     console.log(error)
@@ -200,11 +204,6 @@ const getProductName = (id: number): string => {
 const getMeasureName = (id: number): string => {
   const measure = measures.value.find(m => m.id === id);
   return measure ? measure.name : "Noma’lum o‘lchov";
-};
-
-const getWarehouseName = (id: number): string => {
-  const warehouse = wareHouses.value.find(w => w.id === id);
-  return warehouse ? `${warehouse.id}` : "Noma’lum ombor";
 };
 
 
@@ -256,11 +255,18 @@ const resetForm = () => {
     price: 0,
     productsId: 0,
     quantity: 0,
-    wareHouseId: 0
+    wareHouseId: 1
   }
   isEditing.value = false
 }
-
+const formDate = (date: Date | string): string => {
+  const metadata = new Date(date);
+  return metadata.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  })
+}
 onMounted(() => {
   loadMeasures()
   loadProducts()

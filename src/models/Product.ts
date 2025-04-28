@@ -5,6 +5,7 @@ export interface Income {
     quantity: number;
     measureId: number;
     price: number;
+    createdAt: Date;
 }
 
 export interface WareHouse {
@@ -32,10 +33,12 @@ export interface Orders {
     wareHouseId: number;
     quantity: number;
     measureId: number;
+    createdAt: Date;
 }
 
 export interface updateOrder extends createOrder {
     id: number;
+    status?: string;
 }
 
 export interface createOrder {
@@ -43,6 +46,7 @@ export interface createOrder {
     wareHouseId: number;
     quantity: number;
     measureId: number;
+    status?: string;
 }
 
 export interface createProduct {
@@ -79,6 +83,7 @@ export interface updateProduct extends createProduct {
 
 export interface updateIncome extends createIncome {
     id: number
+    status?: string;
 }
 
 
@@ -88,4 +93,5 @@ export interface createIncome {
     quantity: number;
     measureId: number;
     price: number;
+    status?: string;
 }

@@ -61,7 +61,7 @@ const message = ref('')
 const handleSignUp = async () => {
   try {
     await AuthService.signUp(form.value)
-    await router.push({name: "Dashboard"})
+    await router.push("/dashboard")
   } catch (e) {
     console.error(e)
     message.value = "Hatolik mavjud"

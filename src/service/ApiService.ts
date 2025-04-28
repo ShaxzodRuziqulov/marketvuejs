@@ -29,7 +29,7 @@ export const ApiService = {
     async createOrder(order: createOrder) {
         return await axiosInstance.post("/api/order/create", order);
     },
-    async updateOrder(id: number,order: updateOrder){
+    async updateOrder(id: number, order: updateOrder) {
         return await axiosInstance.put(`/api/order/update/${id}`, order);
     },
     async getAllOrders() {
@@ -61,5 +61,11 @@ export const ApiService = {
     },
     async deleteOrder(id: number) {
         return await axiosInstance.delete(`/api/order/delete/${id}`);
+    },
+    async activeIncome() {
+        return await axiosInstance.get("/api/income/allActive");
+    },
+    async activeOrder() {
+        return await axiosInstance.get("/api/order/allActive");
     }
 }

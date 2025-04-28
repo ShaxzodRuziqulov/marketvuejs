@@ -1,118 +1,194 @@
 <template>
-  <div class="p-6 bg-gray-100 min-h-screen">
+  <div class="min-h-screen bg-gray-50 p-8">
 
-    <button
-        @click="logout"
-        class="absolute right-10 py-2 px-3 bg-blue-40 border rounded-sm font-semibold justify-center hover:bg-blue-500 transition duration-200">Logout
-    </button>
+    <header class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-800">Bosh Sahifa</h1>
+      <button
+          @click="logout"
+          class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition">
+        Logout
+      </button>
+    </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-
-      <div class="bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-gray-500 text-sm font-semibold">Jami Mahsulotlar</h2>
-        <p class="text-3xl font-bold text-gray-800 mt-2">{{ productCount }}</p>
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      <div class="bg-white p-6 rounded-2xl shadow-md text-center hover:shadow-lg transition">
+        <h2 class="text-gray-500 text-sm font-medium uppercase tracking-wider">Mahsulotlar</h2>
+        <p class="text-4xl font-bold text-gray-800 mt-2">{{ productCount }}</p>
       </div>
-      <div class="bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-gray-500 text-sm font-semibold">Jami Buyurtmalar</h2>
-        <p class="text-3xl font-bold text-gray-800 mt-2">{{ orderCount }}</p>
+      <div class="bg-white p-6 rounded-2xl shadow-md text-center hover:shadow-lg transition">
+        <h2 class="text-gray-500 text-sm font-medium uppercase tracking-wider">Buyurtmalar</h2>
+        <p class="text-4xl font-bold text-gray-800 mt-2">{{ orderCount }}</p>
       </div>
-      <div class="bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-gray-500 text-sm font-semibold">Jami Kirimlar</h2>
-        <p class="text-3xl font-bold text-gray-800 mt-2">{{ incomeCount }}</p>
+      <div class="bg-white p-6 rounded-2xl shadow-md text-center hover:shadow-lg transition">
+        <h2 class="text-gray-500 text-sm font-medium uppercase tracking-wider">Kirimlar</h2>
+        <p class="text-4xl font-bold text-gray-800 mt-2">{{ incomeCount }}</p>
       </div>
-    </div>
+    </section>
 
-    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
-      <h2 class="text-lg font-semibold mb-4">Eng so‘nggi kirimlar</h2>
-      <table class="w-full text-left border-collapse">
-        <thead>
-        <tr class="bg-gray-100 text-sm text-gray-600">
-          <th class="p-3">#</th>
-          <th class="p-3">Mahsulot</th>
-          <th class="p-3">Miqdor</th>
-          <th class="p-3">Sana</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(income, index) in incomesForDisplay" :key="income.id" class="border-t text-sm">
-          <td class="p-3">{{ index + 1 }}</td>
-          <td class="p-3">{{ income.productName }}</td>
-          <td class="p-3">{{ income.quantity }} {{ income.measureName }}</td>
-          <td class="p-3">{{ income.date }}</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+    <section class="space-y-12">
 
+      <div>
+        <h2 class="text-2xl font-bold text-gray-700 mb-4">Ombordagi mahsulotlar ro'yhati</h2>
+        <div class="overflow-x-auto bg-white shadow rounded-2xl">
+          <table class="min-w-full text-sm text-gray-700">
+            <thead class="bg-gray-100 text-xs uppercase tracking-wider">
+            <tr>
+              <th class="px-6 py-4 text-left">ID</th>
+              <th class="px-6 py-4 text-left">Mahsulot</th>
+              <th class="px-6 py-4 text-left">Miqdori</th>
+              <th class="px-6 py-4 text-left">O'lchov</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="warehouse in wareHouses" :key="warehouse.id">
+              <td class="px-6 py-4">{{ warehouse.id }}</td>
+              <td class="px-6 py-4">{{ getProductName(warehouse.productsId) }}</td>
+              <td class="px-6 py-4">{{ warehouse.quantity }}</td>
+              <td class="px-6 py-4">{{ getMeasureName(warehouse.measureId) }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-bold text-gray-700 mb-4">Yangi Kirimlar</h2>
+        <div class="overflow-x-auto bg-white shadow rounded-2xl">
+          <table class="min-w-full text-sm text-gray-700">
+            <thead class="bg-gray-100 text-xs uppercase tracking-wider">
+            <tr>
+              <th class="px-6 py-4 text-left">ID</th>
+              <th class="px-6 py-4 text-left">Mahsulot</th>
+              <th class="px-6 py-4 text-left">Narxi</th>
+              <th class="px-6 py-4 text-left">Miqdori</th>
+              <th class="px-6 py-4 text-left">O'lchov</th>
+              <th class="px-6 py-4 text-left">Yaratilgan sanasi</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="income in incomes" :key="income.id" class="border-t hover:bg-gray-50">
+              <td class="px-6 py-4">{{ income.id }}</td>
+              <td class="px-6 py-4">{{ getProductName(income.productsId) }}</td>
+              <td class="px-6 py-4">{{ income.price.toLocaleString() }} so'm</td>
+              <td class="px-6 py-4">{{ income.quantity }}</td>
+              <td class="px-6 py-4">{{ getMeasureName(income.measureId) }}</td>
+              <td class="px-6 py-4">{{ formDate(income.createdAt) }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div v-if="orders.length">
+        <h2 class="text-2xl font-bold text-gray-700 mb-4">Buyurtmalar</h2>
+        <div class="overflow-x-auto bg-white shadow rounded-2xl">
+          <table class="min-w-full text-sm text-gray-700">
+            <thead class="bg-gray-100 text-xs uppercase tracking-wider">
+            <tr>
+              <th class="px-6 py-4 text-left">ID</th>
+              <th class="px-6 py-4 text-left">Mahsulot</th>
+              <th class="px-6 py-4 text-left">Miqdori</th>
+              <th class="px-6 py-4 text-left">O'lchov</th>
+              <th class="px-6 py-4 text-left">Yaratilgan sanasi</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="order in orders" :key="order.id" class="border-t hover:bg-gray-50">
+              <td class="px-6 py-4">{{ order.id }}</td>
+              <td class="px-6 py-4">{{ getProductName(order.productsId) }}</td>
+              <td class="px-6 py-4">{{ order.quantity }}</td>
+              <td class="px-6 py-4">{{ getMeasureName(order.measureId) }}</td>
+              <td class="px-6 py-4">{{ formDate(order.createdAt) }}</td>
+
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
 
   </div>
 </template>
 
 <script setup lang="ts">
-import {computed, onMounted, ref} from 'vue'
-import router from "../router";
+import {onMounted, ref} from "vue";
+import type {Income, Measures, Orders, Product, WareHouse} from "../models/Product.js";
+import {ApiService} from "../service/ApiService.ts";
 import {DashboardService} from "../service/DashboardService.ts";
+import router from "../router";
 
-const productCount = ref(0)
-const orderCount = ref(0)
-const incomeCount = ref(0)
+const productCount = ref(0);
+const orderCount = ref(0);
+const incomeCount = ref(0);
 
-
-const latestIncomes = ref<Array<any>>([])
+const measures = ref<Measures[]>([]);
+const products = ref<Product[]>([]);
+const wareHouses = ref<WareHouse[]>([]);
+const incomes = ref<Income[]>([]);
+const orders = ref<Orders[]>([]);
 
 const loadStats = async () => {
   try {
-    const [products, orders, incomes, latest] = await Promise.all([
+    const [products, orders, incomes] = await Promise.all([
       DashboardService.getProductCount(),
       DashboardService.getOrderCount(),
       DashboardService.getIncomeCount(),
-      DashboardService.getLatestIncomes()
-    ])
-    productCount.value = products.data
-    orderCount.value = orders.data
-    incomeCount.value = incomes.data
-    latestIncomes.value = latest.data
+    ]);
+    productCount.value = products.data;
+    orderCount.value = orders.data;
+    incomeCount.value = incomes.data;
   } catch (error) {
-    console.error("Xatolik:", error)
+    console.error("Xatolik:", error);
   }
-}
+};
 
-// const loadChart = async () => {
-//   try {
-//     const res = await DashboardService.getChartData()
-//     const ctx = document.getElementById('productChart') as HTMLCanvasElement
-//     new Chart(ctx, {
-//       type: 'bar',
-//       data: {
-//         labels: res.data.labels,
-//         datasets: [{
-//           label: 'Mahsulotlar soni',
-//           data: res.data.values,
-//           backgroundColor: '#3b82f6'
-//         }]
-//       }
-//     })
-//   } catch (error) {
-//     console.error("Chart yuklashda xatolik:", error)
-//   }
-// }
+const loadAllData = async () => {
+  try {
+    const [productRes, warehouseRes, measureRes, incomeRes, orderRes] = await Promise.all([
+      ApiService.getAllProducts(),
+      ApiService.getAllWarehouses(),
+      ApiService.getAllMeasures(),
+      ApiService.activeIncome(),
+      ApiService.activeOrder(),
+    ]);
+    products.value = productRes.data;
+    wareHouses.value = warehouseRes.data;
+    measures.value = measureRes.data;
+    incomes.value = incomeRes.data;
+    orders.value = orderRes.data;
+  } catch (error) {
+    console.error("Xatolik yuklashda:", error);
+  }
+};
 
-const incomesForDisplay = computed(() => {
-  return (latestIncomes.value || []).map(income => ({
-    ...income,
-    date: income.created_at ? income.created_at.slice(0, 10) : '—'
-  }))
-})
+const getProductName = (id: number): string => {
+  const product = products.value.find(p => p.id === id);
+  return product ? product.name : "Noma’lum mahsulot";
+};
 
-onMounted(() => {
-  loadStats()
-})
+const getMeasureName = (id: number): string => {
+  const measure = measures.value.find(m => m.id === id);
+  return measure ? measure.name : "Noma’lum o‘lchov";
+};
+
 
 const logout = () => {
   localStorage.removeItem("token");
   router.push("/login");
 };
-</script>
 
-<style scoped>
-</style>
+const formDate = (dateString: Date | string): string => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  })
+}
+onMounted(() => {
+  loadAllData();
+  loadStats();
+});
+</script>

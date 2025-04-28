@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 max-x-2xl mx-auto">
+  <div class="p-6 max-w-3xl mx-auto">
     <div class="bg-white shadow-xl rounded-2xl p-6 transition-all duration-300 border border-gray-100">
       <form @submit.prevent="handleSubmit">
         <h2 class="text-2xl font-bold mb-4">
@@ -14,17 +14,6 @@
           <option disabled>Mahsulotni tanlang</option>
           <option v-for="product in products" :key="product.id" :value="product.id">
             {{ product.name }}
-          </option>
-        </select>
-
-        <label class="block text-gray-700 font-medium mb-1">Ombor raqami</label>
-        <select
-            v-model="form.wareHouseId"
-            required
-            class="border border-gray-300 focus:ring-2 focus:ring-green-400 focus:outline-none rounded-lg p-3 w-full mb-4 placeholder-gray-400 transition-all duration-200">
-          <option disabled>Omborni tanlang</option>
-          <option v-for="warehouse in wareHouses" :key="warehouse.id" :value="warehouse.id">
-            {{ warehouse.id }}
           </option>
         </select>
 
@@ -47,6 +36,18 @@
             {{ measure.name }}
           </option>
         </select>
+        <div v-if="isEditing" class="mb-4">
+          <label class="block text-gray-700 font-medium mb-1">Status</label>
+          <select
+              v-model="form.status"
+              class="border border-gray-300 rounded-lg p-3 w-full mb-4"
+              required>
+            <option value="" disabled>Holatni tanlang</option>
+
+            <option value="ACTIVE">ACTIVE</option>
+            <option value="INACTIVE">INACTIVE</option>
+          </select>
+        </div>
         <div class="flex gap-4 mb-4">
           <button
               type="submit"
@@ -70,7 +71,6 @@
         <tr>
           <th class="px-6 py-4 text-left">ID</th>
           <th class="px-6 py-4 text-left">Mahsulot</th>
-          <th class="px-6 py-4 text-left">Ombor</th>
           <th class="px-6 py-4 text-left">Miqdori</th>
           <th class="px-6 py-4 text-left">O'lchov</th>
           <th class="px-6 py-4 text-left">Amallar</th>
@@ -81,7 +81,6 @@
             class="hover:bg-gray-50 transition-all duration-200 border-t border-gray-200">
           <td class="px-6 py-4">{{ order.id }}</td>
           <td class="px-6 py-4">{{ getProductName(order.productsId) }}</td>
-          <td class="px-6 py-4">{{ getWarehouseName(order.wareHouseId) }}</td>
           <td class="px-6 py-4">{{ order.quantity }}</td>
           <td class="px-6 py-4">{{ getMeasureName(order.measureId) }}</td>
           <td class="px-6 py-4">
@@ -119,7 +118,7 @@ const orders = ref<Orders[]>([]);
 const form = ref<createOrder>({
   productsId: 0,
   quantity: 0,
-  wareHouseId: 0,
+  wareHouseId: 1,
   measureId: 0
 });
 
@@ -186,7 +185,7 @@ const deleteOrder = async (id: number) => {
 
 const fetchAllOrders = async () => {
   try {
-    const response = await ApiService.getAllOrders();
+    const response = await ApiService.activeOrder();
     orders.value = response.data || [];
   } catch (error) {
     console.error(error);
@@ -198,7 +197,7 @@ const resetForm = () => {
     productsId: 0,
     quantity: 0,
     wareHouseId: 0,
-    measureId: 0
+    measureId: 1
   };
   isEditing.value = false;
 };
