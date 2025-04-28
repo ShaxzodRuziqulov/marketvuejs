@@ -26,7 +26,6 @@
     </section>
 
     <section class="space-y-12">
-
       <div>
         <h2 class="text-2xl font-bold text-gray-700 mb-4">Ombordagi mahsulotlar ro'yhati</h2>
         <div class="overflow-x-auto bg-white shadow rounded-2xl">
@@ -40,7 +39,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="warehouse in wareHouses" :key="warehouse.id">
+            <tr v-for="warehouse in sortWareHouses" :key="warehouse.id">
               <td class="px-6 py-4">{{ warehouse.id }}</td>
               <td class="px-6 py-4">{{ getProductName(warehouse.productsId) }}</td>
               <td class="px-6 py-4">{{ warehouse.quantity }}</td>
@@ -113,7 +112,7 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import type {Income, Measures, Orders, Product, WareHouse} from "../models/Product.js";
 import {ApiService} from "../service/ApiService.ts";
 import {DashboardService} from "../service/DashboardService.ts";
@@ -162,6 +161,10 @@ const loadAllData = async () => {
     console.error("Xatolik yuklashda:", error);
   }
 };
+
+const sortWareHouses = computed(() => {
+  return wareHouses.value.sort((a, b) => a.id - b.id);
+})
 
 const getProductName = (id: number): string => {
   const product = products.value.find(p => p.id === id);

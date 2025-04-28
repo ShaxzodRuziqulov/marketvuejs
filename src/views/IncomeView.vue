@@ -58,12 +58,6 @@
               required
               placeholder="Narxi"
               class="flex-1 border border-gray-300 focus:ring-2 focus:ring-green-400 focus:outline-none rounded-lg p-3 placeholder-gray-400 transition-all duration-200">
-          <select
-              class="w-32 border border-gray-300 focus:ring-2 focus:ring-green-400 focus:outline-none rounded-lg p-3 transition-all duration-200">
-            <option>Valyuta</option>
-            <option>So`m</option>
-            <option>$</option>
-          </select>
         </div>
         <div class="flex gap-4 mb-4">
           <button
@@ -163,6 +157,7 @@ const update = ref<updateIncome>({
 const loadProducts = async () => {
   try {
     const response = await ApiService.getAllProducts()
+    console.log('response', response)
     products.value = response.data
   } catch (error) {
     console.log(error)
