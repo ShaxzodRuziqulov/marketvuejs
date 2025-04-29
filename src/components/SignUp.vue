@@ -7,16 +7,30 @@
 
         <form @submit.prevent="handleSignUp" class="space-y-4">
           <div class="flex gap-4">
-            <input v-model="form.firstname" type="text" placeholder="First name"
-                   class="w-1/2 px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none" required/>
-            <input v-model="form.lastname" type="text" placeholder="Last name"
-                   class="w-1/2 px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none" required/>
+            <input v-model="form.firstname"
+                   type="text"
+                   placeholder="First name"
+                   class="w-1/2 px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                   required/>
+            <input v-model="form.lastname"
+                   type="text"
+                   placeholder="Last name"
+                   class="w-1/2 px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                   required/>
           </div>
 
-          <input v-model="form.username" type="text" placeholder="Username"
-                 class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none" required/>
-          <input v-model="form.password" type="password" placeholder="Password"
-                 class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none" required/>
+          <input
+              v-model="form.username"
+              type="text"
+              placeholder="Username"
+              class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+              required/>
+          <input
+              v-model="form.password"
+              type="password"
+              placeholder="Password"
+              class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+              required/>
 
           <button type="submit"
                   class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md transition">Create an account
