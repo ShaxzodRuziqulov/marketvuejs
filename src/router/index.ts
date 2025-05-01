@@ -77,15 +77,12 @@ router.beforeEach((to, _, next) => {
     const token = localStorage.getItem("token");
     const isLoggedIn = !!token;
 
-    // Kerakli auth bo‘lsa va foydalanuvchi login bo‘lmagan bo‘lsa
     if (to.meta.requiresAuth && !isLoggedIn) {
         next("/login");
     }
-    // Login yoki signup sahifasiga borayotgan, lekin login bo‘lgan foydalanuvchi
     else if ((to.path === "/login" || to.path === "/signup") && isLoggedIn) {
         next("/dashboard");
     }
-    // Boshqa holatlarda ruxsat beramiz
     else {
         next();
     }
